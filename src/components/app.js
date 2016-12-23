@@ -14,6 +14,7 @@ import myTable from './table.js';
 import myForm from './form.js';
 import myProgress from './progress.js';
 import myCarousel from './carousel.js';
+import myChart from './chart.js';
 // import myCalendar from './calendar.js';
 
 
@@ -22,7 +23,8 @@ let routeMap = {
     '/myTable': '1',
     '/myForm': '2',
     '/myProgress': '3',
-    '/myCarousel': '4'
+    '/myCarousel': '4',
+    '/myChart': '5'
 };
 
 // 配置导航
@@ -50,7 +52,7 @@ class Sider extends React.Component {
 
     componentDidMount() {
         this.setState({
-            username: 'luckykun'
+            username: 'houzezhou'
         });
     }
 
@@ -65,13 +67,16 @@ class Sider extends React.Component {
                         defaultOpenKeys={['sub1', 'sub2']}
                         defaultSelectedKeys={[this.state.current]}
                         mode="inline"
-                    >
-                        <Menu.Item key="0"><Link to="/myIntroduce"><Icon type="mail" />我没有子菜单</Link></Menu.Item>
+                    >   
                         <SubMenu key="sub1" title={<span><Icon type="bars" /><span>主导航</span></span>}>
                             <Menu.Item key="1"><Link to="/myTable">表格</Link></Menu.Item>
                             <Menu.Item key="2"><Link to="/myForm">表单</Link></Menu.Item>
                             <Menu.Item key="3"><Link to="/myProgress">进度条</Link></Menu.Item>
                             <Menu.Item key="4"><Link to="/myCarousel">轮播</Link></Menu.Item>
+                        </SubMenu>
+                        <SubMenu key="sub2" title={<span><Icon type="mail" /><span>导航一</span></span>}>
+                            <Menu.Item key="5"><Link to="/myIntroduce">Font</Link></Menu.Item>
+                            <Menu.Item key="6"><Link to="/myChart">图表</Link></Menu.Item>
                         </SubMenu>
                     </Menu>
                 </div>
