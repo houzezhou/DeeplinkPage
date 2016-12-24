@@ -106,6 +106,7 @@ ReactDom.render((
             <Route path="myForm" component={myForm} />
             <Route path="myProgress" component={myProgress} />
             <Route path="myCarousel" component={myCarousel} />
+            <Route path="myChart" component={myChart} />
         </Route>
     </Router>
 ), document.getElementById('app'));
