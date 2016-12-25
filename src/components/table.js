@@ -16,7 +16,8 @@ export default class myTable extends React.Component {
         for (let i = 0; i < 23; i++) {
             data.push({
                 key: i,
-                name: `义坤${i}`,   //带变量的字符串
+                tdname:'应用下载',
+                name: `乐视下载${i}`,   //带变量的字符串
                 age: 18,
                 address: `西湖区湖底公园${i}号`,
                 operate: 'https://www.aliyun.com'
@@ -36,7 +37,11 @@ export default class myTable extends React.Component {
 
     render() {
         const columns = [{
-            title: '姓名',
+            title: '推广名称',
+            width: '20%',
+            dataIndex: 'tdname'
+        }, {
+            title: '渠道',
             width: '20%',
             dataIndex: 'name'
         }, {
@@ -45,7 +50,7 @@ export default class myTable extends React.Component {
             dataIndex: 'age',
         }, {
             title: '住址',
-            width: '40%',
+            width: '20%',
             dataIndex: 'address'
         }, {
             title: '操作',

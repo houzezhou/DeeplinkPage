@@ -69,7 +69,7 @@ class Sider extends React.Component {
                         mode="inline"
                     >   
                         <SubMenu key="sub1" title={<span><Icon type="bars" /><span>主导航</span></span>}>
-                            <Menu.Item key="1"><Link to="/myTable">表格</Link></Menu.Item>
+                            <Menu.Item key="1"><Link to="/myTable">推广</Link></Menu.Item>
                             <Menu.Item key="2"><Link to="/myForm">表单</Link></Menu.Item>
                             <Menu.Item key="3"><Link to="/myProgress">进度条</Link></Menu.Item>
                             <Menu.Item key="4"><Link to="/myCarousel">轮播</Link></Menu.Item>
