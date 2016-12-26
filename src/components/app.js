@@ -6,11 +6,15 @@ import { Router, Route, Link, hashHistory, IndexRoute, Redirect, IndexLink} from
 
 // 引入Antd的导航组件
 import { Menu, Icon } from 'antd';
+import { DatePicker } from 'antd';
+const { RangePicker } = DatePicker;
 const SubMenu = Menu.SubMenu;
 
 // 引入单个页面（包括嵌套的子页面）
+import myRangePicker from './datepicker/datepicker.js';
 import myIntroduce from './introduce.js';
-import myTable from './table.js';
+import myPromote from './promote/table_promote.js';
+import myAnalyze from './analyze/table_analyze.js';
 import myForm from './form.js';
 import myProgress from './progress.js';
 import myCarousel from './carousel.js';
@@ -20,11 +24,12 @@ import myChart from './chart.js';
 
 let routeMap = {
     '/myIntroduce': '0',
-    '/myTable': '1',
+    '/myPromote': '1',
     '/myForm': '2',
     '/myProgress': '3',
     '/myCarousel': '4',
-    '/myChart': '5'
+    '/myChart': '5',
+    '/myAnalyze': '6'
 };
 
 // 配置导航
@@ -69,23 +74,30 @@ class Sider extends React.Component {
                         mode="inline"
                     >   
                         <SubMenu key="sub1" title={<span><Icon type="bars" /><span>主导航</span></span>}>
-                            <Menu.Item key="1"><Link to="/myTable">推广</Link></Menu.Item>
-                            <Menu.Item key="2"><Link to="/myForm">表单</Link></Menu.Item>
-                            <Menu.Item key="3"><Link to="/myProgress">进度条</Link></Menu.Item>
-                            <Menu.Item key="4"><Link to="/myCarousel">轮播</Link></Menu.Item>
+                            <Menu.Item key="1"><Link className="homeleftlink" to="/myChart">概览</Link></Menu.Item>
+                            <Menu.Item key="2"><Link className="homeleftlink" to="/myPromote">推广</Link></Menu.Item>
+                            <Menu.Item key="3"><Link className="homeleftlink" to="/myAnalyze">分析</Link></Menu.Item>
+                            <Menu.Item key="4"><Link className="homeleftlink" to="/myForm">表单</Link></Menu.Item>
+                            <Menu.Item key="5"><Link className="homeleftlink" to="/myProgress">进度条</Link></Menu.Item>
                         </SubMenu>
                         <SubMenu key="sub2" title={<span><Icon type="mail" /><span>导航一</span></span>}>
-                            <Menu.Item key="5"><Link to="/myIntroduce">Font</Link></Menu.Item>
-                            <Menu.Item key="6"><Link to="/myChart">图表</Link></Menu.Item>
+                            <Menu.Item key="6"><Link to="/myIntroduce">Font</Link></Menu.Item>
+                            <Menu.Item key="7"><Link to="/myCarousel">轮播</Link></Menu.Item>
                         </SubMenu>
                     </Menu>
                 </div>
                 <div id="rightWrap">
-                    <Menu mode="horizontal">
-                        <SubMenu title={<span><Icon type="user" />{ this.state.username }</span>}>
-                            <Menu.Item key="setting:1">退出</Menu.Item>
-                        </SubMenu>
-                    </Menu>
+                    <div style={{borderBottom:'1px solid #d9d9d9'}}>
+                        <span style={{fontSize:'15px'}}> <Icon type="calendar" />  时段选择 ：</span>
+                        <RangePicker style={{marginTop:'10px'}}/>              
+                        <Menu mode="horizontal" style={{float:'right'}}>                   
+                            <SubMenu title={<span><Icon type="user" />{ this.state.username }</span>}>
+                                <Menu.Item key="setting:1">退出</Menu.Item>
+                            </SubMenu>
+                        </Menu>
+                        <div style={{clear:'both'}}></div>
+                    </div>
+                    
                     <div className="right-box">
                         { this.props.children }
                     </div>
@@ -102,7 +114,8 @@ ReactDom.render((
         <Route path="/" component={Sider}>
             <IndexRoute component={myIntroduce} />
             <Route path="myIntroduce" component={myIntroduce} />
-            <Route path="myTable" component={myTable} />
+            <Route path="myPromote" component={myPromote} />
+            <Route path="myAnalyze" component={myAnalyze} />
             <Route path="myForm" component={myForm} />
             <Route path="myProgress" component={myProgress} />
             <Route path="myCarousel" component={myCarousel} />
