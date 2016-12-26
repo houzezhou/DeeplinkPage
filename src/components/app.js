@@ -6,12 +6,10 @@ import { Router, Route, Link, hashHistory, IndexRoute, Redirect, IndexLink} from
 
 // 引入Antd的导航组件
 import { Menu, Icon } from 'antd';
-import { DatePicker } from 'antd';
-const { RangePicker } = DatePicker;
 const SubMenu = Menu.SubMenu;
 
 // 引入单个页面（包括嵌套的子页面）
-import myRangePicker from './datepicker/datepicker.js';
+import Topbar from './topbar/topbar.js';
 import myIntroduce from './introduce.js';
 import myPromote from './promote/table_promote.js';
 import myAnalyze from './analyze/table_analyze.js';
@@ -87,17 +85,7 @@ class Sider extends React.Component {
                     </Menu>
                 </div>
                 <div id="rightWrap">
-                    <div style={{borderBottom:'1px solid #d9d9d9'}}>
-                        <span style={{fontSize:'15px'}}> <Icon type="calendar" />  时段选择 ：</span>
-                        <RangePicker style={{marginTop:'10px'}}/>              
-                        <Menu mode="horizontal" style={{float:'right'}}>                   
-                            <SubMenu title={<span><Icon type="user" />{ this.state.username }</span>}>
-                                <Menu.Item key="setting:1">退出</Menu.Item>
-                            </SubMenu>
-                        </Menu>
-                        <div style={{clear:'both'}}></div>
-                    </div>
-                    
+                    <Topbar/>
                     <div className="right-box">
                         { this.props.children }
                     </div>

@@ -2,11 +2,11 @@ import React from 'react'
 import Highcharts from 'highcharts'
 
 export default class myChart extends React.Component {
-    randerChart = () => {
+    randerChart = (type) => {
         var chart = new Highcharts.Chart({
             chart: {
                 renderTo: 'container',
-                type: 'column'
+                type: type ? type : 'column'
             },
             title: {
                 text: null
@@ -58,14 +58,17 @@ export default class myChart extends React.Component {
     }
 
     componentDidMount() {
-        this.randerChart()
+        this.randerChart('line')
     }
 
     render() {
         return (
-            <div id="container" className="chart-box">
-
-            </div>
+            <div>
+                <div id="container" className="chart-box"></div>
+                {/*<div onClick = {this.randerChart('line')}> {'line'} </div>
+                <div onClick = {this.randerChart('pie')}> {'pie'} </div>
+                <div onClick = {this.randerChart('column')}> 'column'} </div>*/}
+            </div>          
         )
     }
 }
