@@ -57,19 +57,19 @@ module.exports = {
            name: 'vendor',
            filename: 'vendor.js'
         }),*/
-        new webpack.optimize.UglifyJsPlugin({
+        /*new webpack.optimize.UglifyJsPlugin({
             compress: {
                 warnings: false
             },
             mangle: {
                 except: ['$', 'exports', 'require']
             }
-        })
+        })*/
     ]
 
 }
 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV === 'production') {
     module.exports.plugins = [
         new ExtractTextPlugin('main.css'),
         new webpack.DefinePlugin({
@@ -86,5 +86,5 @@ if (process.env.NODE_ENV !== 'production') {
     ];
     module.exports.devtool = false;
 } else {
-    module.exports.devtool = 'eval-source-map'
+    module.exports.devtool = 'eval-source-map';
 }

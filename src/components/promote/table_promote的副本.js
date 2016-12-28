@@ -45,11 +45,13 @@ export default class myTable extends React.Component {
 
     // checkbox状态
     onSelectChange(selectedRowKeys) {
+        //debugger
         console.log('selectedRowKeys changed: ', selectedRowKeys)
         this.setState({ selectedRowKeys })
     }
 
     render() {
+        var _this = this;
         const columns = [{
             title: '推广名称',
             width: '10%',
@@ -107,7 +109,7 @@ export default class myTable extends React.Component {
                 return (
                   <div>
                     <a href={text} target="_blank"><Button type="primary">分析</Button></a>
-                    <Button style={{marginLeft:'10px'}} type="default">编辑</Button>
+                    <button style={{marginLeft:'10px'}} onClick={_this.onSelectChange.bind(_this)} type="default">编辑</button>
                   </div>  
                 )
             }
@@ -131,7 +133,7 @@ export default class myTable extends React.Component {
             }
         }
 
-        return(
+        return (
           <div>  
             <Table rowSelection={rowSelection} columns={columns} dataSource={this.state.tDate} bordered pagination={pagination} /> 
             <Mymodal isShow/>

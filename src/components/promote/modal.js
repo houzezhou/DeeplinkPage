@@ -4,9 +4,6 @@ import {Input,Icon,Button,Modal} from 'antd';
 export default class Mymodal extends React.Component{
 	constructor(props) {
 		super(props);
-		this.state = {
-      visible:true
-    }
 	}
 
 	//module框
@@ -28,7 +25,7 @@ export default class Mymodal extends React.Component{
 
   render(){
   	return(
-  		<Modal title="Modal" visible={this.state.visible} onOk={this.handleOk} onCancel={this.handleCancel} 
+  		<Modal title="Modal" visible={this.props.visible} onOk={this.handleOk} onCancel={this.handleCancel} 
           okText="OK" cancelText="Cancel">
         <p>Bla bla ...</p>
         <p>Bla bla ...</p>
