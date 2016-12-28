@@ -13,6 +13,7 @@ import Topbar from './topbar/topbar.js';
 import myIntroduce from './introduce.js';
 import myPromote from './promote/table_promote.js';
 import myAnalyze from './analyze/table_analyze.js';
+import myTable from './table/table_promote.js';
 import myForm from './form.js';
 import myProgress from './progress.js';
 import myCarousel from './carousel.js';
@@ -81,6 +82,7 @@ class Sider extends React.Component {
                         <SubMenu key="sub2" title={<span><Icon type="mail" /><span>导航一</span></span>}>
                             <Menu.Item key="6"><Link to="/myIntroduce">Font</Link></Menu.Item>
                             <Menu.Item key="7"><Link to="/myCarousel">轮播</Link></Menu.Item>
+                            <Menu.Item key="8"><Link to="/myTable">筛选表格</Link></Menu.Item>
                         </SubMenu>
                     </Menu>
                 </div>
@@ -108,6 +110,7 @@ ReactDom.render((
             <Route path="myProgress" component={myProgress} />
             <Route path="myCarousel" component={myCarousel} />
             <Route path="myChart" component={myChart} />
+            <Route path="myTable" component={myTable} />
         </Route>
     </Router>
 ), document.getElementById('app'));
