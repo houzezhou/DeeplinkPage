@@ -1,5 +1,7 @@
 import React from 'react';
 import {Table,Input,Icon,Button} from 'antd';
+import {Link} from 'react-router';
+//import mymodal from './modal.js';
 import './table_promote.css';
 
 export default class myTable extends React.Component {
@@ -7,7 +9,8 @@ export default class myTable extends React.Component {
         super(props);
         this.state = {
             tDate: [],
-            selectedRowKeys: []
+            selectedRowKeys: [],
+            visible: false
         };
     }
 
@@ -98,10 +101,15 @@ export default class myTable extends React.Component {
             dataIndex: 'createTime'
         }, {
             title: '操作',
-            width: '10%',
+            width: '15%',
             dataIndex: 'operate',
             render(text) {
-                return <a href={text} target="_blank"><Button type="primary">分析</Button></a>
+                return (
+                  <div>
+                    <a href={text} target="_blank"><Button type="primary">分析</Button></a>
+                    <Button style={{marginLeft:'10px'}} type="default">编辑</Button>
+                  </div>  
+                )
             }
         }]
 
@@ -124,7 +132,7 @@ export default class myTable extends React.Component {
         }
 
         return (
-            <Table rowSelection={rowSelection} columns={columns} dataSource={this.state.tDate} bordered pagination={pagination} />
+          <Table rowSelection={rowSelection} columns={columns} dataSource={this.state.tDate} bordered pagination={pagination} /> 
         )
     }
 }
