@@ -1,7 +1,7 @@
 import React from 'react';
-import {Table,Input,Icon,Button} from 'antd';
+import {Table,Input,Icon,Button,Modal} from 'antd';
 import {Link} from 'react-router';
-//import mymodal from './modal.js';
+import Mymodal from './modal.js';
 import './table_promote.css';
 
 export default class myTable extends React.Component {
@@ -132,7 +132,10 @@ export default class myTable extends React.Component {
         }
 
         return (
-          <Table rowSelection={rowSelection} columns={columns} dataSource={this.state.tDate} bordered pagination={pagination} /> 
+          <div>  
+            <Table rowSelection={rowSelection} columns={columns} dataSource={this.state.tDate} bordered pagination={pagination} /> 
+            <Mymodal isShow/>
+          </div>
         )
     }
 }
