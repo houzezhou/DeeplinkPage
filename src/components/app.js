@@ -4,13 +4,17 @@ import React from 'react';
 import ReactDom from 'react-dom';
 import { Router, Route, Link, hashHistory, IndexRoute, Redirect, IndexLink} from 'react-router';
 
+// Add react-redux
+import {Provider} from 'react-redux';
+import configerStore from './configerStore.js'
+
 // 引入Antd的导航组件
 import { Menu, Icon } from 'antd';
 const SubMenu = Menu.SubMenu;
 
 // 引入单个页面（包括嵌套的子页面）
 import Topbar from './topbar/topbar.js';
-import myIntroduce from './introduce.js';
+import myAccount from './account.js';
 import myPromote from './promote/table_promote.js';
 import myAnalyze from './analyze/table_analyze.js';
 import myTable from './table/table_promote.js';
@@ -22,7 +26,7 @@ import myChart from './chart.js';
 
 
 let routeMap = {
-    '/myIntroduce': '0',
+    '/myAccount': '0',
     '/myPromote': '1',
     '/myForm': '2',
     '/myProgress': '3',
@@ -37,7 +41,8 @@ class Sider extends React.Component {
         super(props);
         this.state = {
             current: '',
-            username: ''
+            username: 'houzezhou',
+            isShow: true
         };
     }
 
@@ -49,6 +54,7 @@ class Sider extends React.Component {
 
     componentWillMount() {
         var route = this.props.location.pathname;
+        //debugger
         this.setState({
             current: routeMap[route] || '0'
         });
@@ -61,6 +67,19 @@ class Sider extends React.Component {
     }
 
     render() {
+
+        //should the Rangepicker show
+        var _this = this;
+        const isShowtopBar = function(){
+            var route = _this.props.location.pathname;
+            if (route == '/myAccount'){
+                //_this.setState({
+                //    isShow : false
+                //})
+            }
+        }
+        isShowtopBar();
+
         return (
             <div>
                 <div id="leftMenu">
@@ -79,15 +98,15 @@ class Sider extends React.Component {
                             <Menu.Item key="4"><Link className="homeleftlink" to="/myForm">表单</Link></Menu.Item>
                             <Menu.Item key="5"><Link className="homeleftlink" to="/myProgress">进度条</Link></Menu.Item>
                         </SubMenu>
-                        <SubMenu key="sub2" title={<span><Icon type="mail" /><span>导航一</span></span>}>
-                            <Menu.Item key="6"><Link to="/myIntroduce">Font</Link></Menu.Item>
+                        <SubMenu key="sub2" title={<span><Icon type="mail" /><span>管理中心</span></span>}>
+                            <Menu.Item key="6"><Link to="/myAccount">账号管理</Link></Menu.Item>
                             <Menu.Item key="7"><Link to="/myCarousel">轮播</Link></Menu.Item>
                             <Menu.Item key="8"><Link to="/myTable">筛选表格</Link></Menu.Item>
                         </SubMenu>
                     </Menu>
                 </div>
                 <div id="rightWrap">
-                    <Topbar/>
+                    <Topbar isShow={this.state.isShow}/>
                     <div className="right-box">
                         { this.props.children }
                     </div>
@@ -99,18 +118,21 @@ class Sider extends React.Component {
 
 
 // 配置路由
+const store = configerStore();
 ReactDom.render((
-    <Router history={hashHistory} >
-        <Route path="/" component={Sider}>
-            <IndexRoute component={myIntroduce} />
-            <Route path="myIntroduce" component={myIntroduce} />
-            <Route path="myPromote" component={myPromote} />
-            <Route path="myAnalyze" component={myAnalyze} />
-            <Route path="myForm" component={myForm} />
-            <Route path="myProgress" component={myProgress} />
-            <Route path="myCarousel" component={myCarousel} />
-            <Route path="myChart" component={myChart} />
-            <Route path="myTable" component={myTable} />
-        </Route>
-    </Router>
+    <Provider store={store}>
+        <Router history={hashHistory} >
+            <Route path="/" component={Sider}>
+                <IndexRoute component={myPromote} />
+                <Route path="myAccount" component={myAccount} /*onEnter={this.isShowtopBar}*//>
+                <Route path="myPromote" component={myPromote} />
+                <Route path="myAnalyze" component={myAnalyze} />
+                <Route path="myForm" component={myForm} />
+                <Route path="myProgress" component={myProgress} />
+                <Route path="myCarousel" component={myCarousel} />
+                <Route path="myChart" component={myChart} />
+                <Route path="myTable" component={myTable} />
+            </Route>
+        </Router>
+    </Provider>
 ), document.getElementById('app'));
