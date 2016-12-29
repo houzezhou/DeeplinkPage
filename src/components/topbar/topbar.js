@@ -6,15 +6,6 @@ import moment from 'moment';
 import{ bindActionCreators } from 'redux';
 import{ connect } from 'react-redux';
 
-function myfunction (dispatch){
-    dispatch({
-        type:'NAME',
-        name:'wuxin',
-        test:'hahahaha'
-    })
-}
-//myfunction();
-
 class Topbar extends React.Component {
     constructor(props) {
         super(props);
@@ -36,9 +27,9 @@ class Topbar extends React.Component {
     		'最近一周': [moment().day(-5), moment()],
             '最近三天': [moment().day(-1), moment()]
     	}
-        const { isShow } = this.props;
+        const { isShow, myfunction, name, test } = this.props;
     	return(
-    		<div style={{borderBottom:'1px solid #d9d9d9'}}>
+    		<div onClick={myfunction} style={{borderBottom:'1px solid #d9d9d9'}}>
                 <span style={{fontSize:'15px',display: isShow ? '' : 'none'}}> <Icon type="calendar" />  时段选择 ：</span> 
                 <RangePicker style={{marginTop:'10px',display: isShow ? '' : 'none'}}
                   ranges={ ranges }
@@ -77,10 +68,28 @@ const mapStateToProps = (state) => {
     }
 }
 
-/*const mapDispatchToProps = (dispatch) => {
-    return{
-        myfunction : bindActionCreators(myfunction(dispatch),dispatch)
-    }
-}*/
+function mytest (){
+    return function(dispatch){
+        dispatch({
+            type:'NAME',
+            name:'wuxin',
+            test:'hahahaha'
+        })
+    }  
+}
 
-export default connect(mapStateToProps)(Topbar);
+const mapDispatchToProps = (dispatch) => {
+    return{ myfunction: bindActionCreators(mytest,dispatch) }
+    /*return { 
+        myfunction : function(){
+            dispatch({
+                type:'NAME',
+                name:'wuxin',
+                test:'hahahaha'
+            })
+        }
+    }*/
+    
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(Topbar);
