@@ -22,6 +22,7 @@ import myForm from './components/form.js';
 import myProgress from './components/progress.js';
 import myCarousel from './components/carousel.js';
 import myChart from './components/chart.js';
+import myApplist from './containers/applistC.js';
 // import myCalendar from './calendar.js';
 
 
@@ -32,7 +33,8 @@ let routeMap = {
     '/myProgress': '3',
     '/myCarousel': '4',
     '/myChart': '5',
-    '/myAnalyze': '6'
+    '/myAnalyze': '6',
+    '/myApplist': '7'
 };
 
 // 配置导航
@@ -67,18 +69,6 @@ class Sider extends React.Component {
 
     render() {
 
-        //should the Rangepicker show
-        var _this = this;
-        const isShowtopBar = function(){
-            var route = _this.props.location.pathname;
-            if (route == '/myAccount'){
-                //_this.setState({
-                //    isShow : false
-                //})
-            }
-        }
-        isShowtopBar();
-
         return (
             <div>
                 <div id="leftMenu">
@@ -90,16 +80,21 @@ class Sider extends React.Component {
                         defaultSelectedKeys={[this.state.current]}
                         mode="inline"
                     >   
-                        <SubMenu key="sub1" title={<span><Icon type="bars" /><span>主导航</span></span>}>
+                        <SubMenu key="sub1" title={<span><Icon type="bars" /><span>数据中心</span></span>}>
                             <Menu.Item key="1"><Link className="homeleftlink" to="/myChart">概览</Link></Menu.Item>
                             <Menu.Item key="2"><Link className="homeleftlink" to="/myPromote">推广</Link></Menu.Item>
                             <Menu.Item key="3"><Link className="homeleftlink" to="/myAnalyze">分析</Link></Menu.Item>
                             <Menu.Item key="4"><Link className="homeleftlink" to="/myForm">表单</Link></Menu.Item>
                             
                         </SubMenu>
+
+                        <SubMenu key="sub3" title={<span><Icon type="mail" /><span>应用中心</span></span>}>
+                            <Menu.Item key="7"><Link to="/myApplist">应用列表</Link></Menu.Item>                           
+                            <Menu.Item key="8"><Link to="/myTable">应用概览</Link></Menu.Item>
+                        </SubMenu>
+
                         <SubMenu key="sub2" title={<span><Icon type="mail" /><span>管理中心</span></span>}>
-                            <Menu.Item key="5"><Link to="/myAccount">账号管理</Link></Menu.Item>
-                            
+                            <Menu.Item key="5"><Link to="/myAccount">账号管理</Link></Menu.Item>                           
                             <Menu.Item key="6"><Link to="/myTable">筛选表格</Link></Menu.Item>
                             {/*<Menu.Item key="7"><Link to="/myCarousel">轮播</Link></Menu.Item>
                             <Menu.Item key="8"><Link className="homeleftlink" to="/myProgress">进度条</Link></Menu.Item>*/}
@@ -133,6 +128,7 @@ ReactDom.render((
                 <Route path="myCarousel" component={myCarousel} />*/}
                 <Route path="myChart" component={myChart} />
                 <Route path="myTable" component={myTable} />
+                <Route path="myApplist" component={myApplist} />
             </Route>
         </Router>
     </Provider>
