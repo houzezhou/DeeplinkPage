@@ -3,3 +3,4 @@
 /build_old/*
 .idea/
 .DS_Store
+npm-debug.log
