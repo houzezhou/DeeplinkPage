@@ -41,8 +41,7 @@ class Sider extends React.Component {
         super(props);
         this.state = {
             current: '',
-            username: 'houzezhou',
-            isShow: true
+            username: 'houzezhou'
         };
     }
 
@@ -96,17 +95,19 @@ class Sider extends React.Component {
                             <Menu.Item key="2"><Link className="homeleftlink" to="/myPromote">推广</Link></Menu.Item>
                             <Menu.Item key="3"><Link className="homeleftlink" to="/myAnalyze">分析</Link></Menu.Item>
                             <Menu.Item key="4"><Link className="homeleftlink" to="/myForm">表单</Link></Menu.Item>
-                            <Menu.Item key="5"><Link className="homeleftlink" to="/myProgress">进度条</Link></Menu.Item>
+                            
                         </SubMenu>
                         <SubMenu key="sub2" title={<span><Icon type="mail" /><span>管理中心</span></span>}>
-                            <Menu.Item key="6"><Link to="/myAccount">账号管理</Link></Menu.Item>
-                            <Menu.Item key="7"><Link to="/myCarousel">轮播</Link></Menu.Item>
-                            <Menu.Item key="8"><Link to="/myTable">筛选表格</Link></Menu.Item>
+                            <Menu.Item key="5"><Link to="/myAccount">账号管理</Link></Menu.Item>
+                            
+                            <Menu.Item key="6"><Link to="/myTable">筛选表格</Link></Menu.Item>
+                            {/*<Menu.Item key="7"><Link to="/myCarousel">轮播</Link></Menu.Item>
+                            <Menu.Item key="8"><Link className="homeleftlink" to="/myProgress">进度条</Link></Menu.Item>*/}
                         </SubMenu>
                     </Menu>
                 </div>
                 <div id="rightWrap">
-                    <Topbar isShow={this.state.isShow}/>
+                    <Topbar/>
                     <div className="right-box">
                         { this.props.children }
                     </div>
@@ -128,8 +129,8 @@ ReactDom.render((
                 <Route path="myPromote" component={myPromote} />
                 <Route path="myAnalyze" component={myAnalyze} />
                 <Route path="myForm" component={myForm} />
-                <Route path="myProgress" component={myProgress} />
-                <Route path="myCarousel" component={myCarousel} />
+                {/*<Route path="myProgress" component={myProgress} />
+                <Route path="myCarousel" component={myCarousel} />*/}
                 <Route path="myChart" component={myChart} />
                 <Route path="myTable" component={myTable} />
             </Route>

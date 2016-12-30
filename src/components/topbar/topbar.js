@@ -27,7 +27,7 @@ class Topbar extends React.Component {
     		'最近一周': [moment().day(-5), moment()],
             '最近三天': [moment().day(-1), moment()]
     	}
-        const { isShow, myfunction, name, test } = this.props;
+        const { isShow, myfunction, username, test } = this.props;
     	return(
     		<div onClick={myfunction} style={{borderBottom:'1px solid #d9d9d9'}}>
                 <span style={{fontSize:'15px',display: isShow ? '' : 'none'}}> <Icon type="calendar" />  时段选择 ：</span> 
@@ -35,7 +35,7 @@ class Topbar extends React.Component {
                   ranges={ ranges }
                 />            
                 <Menu mode="horizontal" style={{float:'right'}}>              
-                    <SubMenu title={<span><Icon type="user" />{ this.props.test }</span>}>
+                    <SubMenu title={<span><Icon type="user" />{ this.props.username }</span>}>
                         <Menu.Item key="setting:1">退出</Menu.Item>
                     </SubMenu>
                     <SubMenu title={<span>{ '切换应用' }</span>}>
@@ -57,14 +57,16 @@ class Topbar extends React.Component {
 const mapStateToProps = (state) => {
     const{
         //age,
-        name,
-        test
+        username,
+        test,
+        isShow
     } = state;
 
     return{
         //age,
-        name,
-        test
+        username,
+        test,
+        isShow
     }
 }
 

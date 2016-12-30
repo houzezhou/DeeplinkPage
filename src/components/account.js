@@ -1,6 +1,7 @@
 import React from 'react'
 import { Tabs,Input } from 'antd';
 
+import{ bindActionCreators } from 'redux';
 import{ connect } from 'react-redux';
 
 import './account.css'
@@ -18,7 +19,11 @@ class myIntroduce extends React.Component {
         console.log(key);
     }
     render() {
-        const { username, test } = this.props;
+        const { username, test, dispatch } = this.props;
+        dispatch({
+            type: 'TOPBAR',
+            isShow: false
+        })
         return (
             <div className="card-container">
                 <div style={{margin:'20px'}}>账号管理</div>
@@ -48,4 +53,29 @@ const mapStateToProps = (state) => {
         test
     }
 }
-export default connect(mapStateToProps)(myIntroduce);
+
+function mytest (){
+    return function(dispatch){
+        dispatch({
+            type:'NAME',
+            name:'wuxin',
+            test:'hahahaha'
+        })
+    }  
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return{ myfunction: bindActionCreators(mytest,dispatch),dispatch:dispatch }
+    /*return { 
+        myfunction : function(){
+            dispatch({
+                type:'NAME',
+                name:'wuxin',
+                test:'hahahaha'
+            })
+        }
+    }*/
+    
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(myIntroduce);

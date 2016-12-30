@@ -1,7 +1,8 @@
 const initState = {
-	username: 'xiaodi',
+	username: 'houzezhou@le.com',
 	name: 'init_name',
-	test: 'init_test'
+	test: 'init_test',
+	isShow: true
 };
 
 const myReducer = (state = initState,action) => {
@@ -13,6 +14,11 @@ const myReducer = (state = initState,action) => {
 			return Object.assign({},state,{
 				name: action.name,
 				test: action.test
+			})
+		}
+		case 'TOPBAR' : {
+			return Object.assign({},state,{
+				isShow: action.isShow
 			})
 		}
 		default:
