@@ -13,15 +13,15 @@ import { Menu, Icon } from 'antd';
 const SubMenu = Menu.SubMenu;
 
 // 引入单个页面（包括嵌套的子页面）
-import Topbar from './topbar/topbar.js';
-import myAccount from './account.js';
-import myPromote from './promote/table_promote.js';
-import myAnalyze from './analyze/table_analyze.js';
-import myTable from './table/table_promote.js';
-import myForm from './form.js';
-import myProgress from './progress.js';
-import myCarousel from './carousel.js';
-import myChart from './chart.js';
+import Topbar from './containers/topbarC.js';
+import myAccount from './containers/accountC.js';
+import myPromote from './components/promote/table_promote.js';
+import myAnalyze from './components/analyze/table_analyze.js';
+import myTable from './components/table/table_promote.js';
+import myForm from './components/form.js';
+import myProgress from './components/progress.js';
+import myCarousel from './components/carousel.js';
+import myChart from './components/chart.js';
 // import myCalendar from './calendar.js';
 
 

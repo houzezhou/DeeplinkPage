@@ -3,10 +3,7 @@ const SubMenu = Menu.SubMenu;
 const { RangePicker } = DatePicker;
 import moment from 'moment';
 
-import{ bindActionCreators } from 'redux';
-import{ connect } from 'react-redux';
-
-class Topbar extends React.Component {
+export default class Topbar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -53,45 +50,3 @@ class Topbar extends React.Component {
     	)
     }
 }
-
-const mapStateToProps = (state) => {
-    const{
-        //age,
-        username,
-        test,
-        isShow
-    } = state;
-
-    return{
-        //age,
-        username,
-        test,
-        isShow
-    }
-}
-
-function mytest (){
-    return function(dispatch){
-        dispatch({
-            type:'NAME',
-            name:'wuxin',
-            test:'hahahaha'
-        })
-    }  
-}
-
-const mapDispatchToProps = (dispatch) => {
-    return{ myfunction: bindActionCreators(mytest,dispatch) }
-    /*return { 
-        myfunction : function(){
-            dispatch({
-                type:'NAME',
-                name:'wuxin',
-                test:'hahahaha'
-            })
-        }
-    }*/
-    
-}
-
-export default connect(mapStateToProps,mapDispatchToProps)(Topbar);
