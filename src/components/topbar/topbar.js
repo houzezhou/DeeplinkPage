@@ -2,6 +2,7 @@ import { DatePicker, Icon, Menu } from 'antd';
 const SubMenu = Menu.SubMenu;
 const { RangePicker } = DatePicker;
 import moment from 'moment';
+import './topbar.css';
 
 export default class Topbar extends React.Component {
     constructor(props) {
@@ -26,7 +27,7 @@ export default class Topbar extends React.Component {
     	}
         const { isShow, myfunction, username, test } = this.props;
     	return(
-    		<div onClick={myfunction} style={{borderBottom:'1px solid #d9d9d9'}}>
+    		<div onClick={myfunction} className="topbar_box">
                 <span style={{fontSize:'15px',display: isShow ? '' : 'none'}}> <Icon type="calendar" />  时段选择 ：</span> 
                 <RangePicker style={{marginTop:'10px',display: isShow ? '' : 'none'}}
                   ranges={ ranges }
