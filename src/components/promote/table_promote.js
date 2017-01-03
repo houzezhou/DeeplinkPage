@@ -1,7 +1,7 @@
 import React from 'react';
 import {Table,Input,Icon,Button,Modal} from 'antd';
 import {Link} from 'react-router';
-import Mymodal from './modal.js';
+//import Mymodal from './modal.js';
 import './table_promote.css';
 
 const data = [];  //23条数据
@@ -26,6 +26,7 @@ for (let i = 0; i < 23; i++) {
         operate: 'http://m.le.com'
     });
 }
+
 
 export default class myTable extends React.Component {
     constructor(props) {

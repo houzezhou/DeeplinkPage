@@ -5,12 +5,12 @@ class PicturesWall extends React.Component {
   state = {
     previewVisible: false,
     previewImage: '',
-    fileList: [{
+    fileList: [/*{
       uid: -1,
       name: 'xxx.png',
       status: 'done',
       url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-    }],
+    }*/],
   };
 
   handleCancel = () => this.setState({ previewVisible: false })
@@ -63,9 +63,14 @@ export default class ContentSteps extends React.Component {
       case 'First' :{
         return(
           <div>
-            <span>应用名称 : </span><Input size="large" className="ct_input" value={this.props.username}/><br/>
+            <span>应用名称 : </span>
+            <Input size="large" className="ct_input" value={this.props.username} style={{marginLeft:'18px'}}/><br/>
             <br/>
-            <span style={{display:'inline-box',float:'left'}}>应用头像 : </span><div style={{float:'left',marginLeft:'20px'}}><PicturesWall/></div><div style={{clear:'both'}}></div>
+            <span style={{display:'inline-box',float:'left'}}>应用头像 : </span>
+            <div style={{float:'left',marginLeft:'20px'}}>
+              <PicturesWall/>
+            </div>
+            <div style={{clear:'both'}}></div>
           </div>
         )
       }

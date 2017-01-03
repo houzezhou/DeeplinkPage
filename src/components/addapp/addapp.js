@@ -46,7 +46,6 @@ export default class Addapp extends React.Component {
 
           <ContentSteps title={ steps[this.state.current].title } phone={phone} username={username} name={name}/>
           <br/>
-          {steps[this.state.current].content}
 
         </div>
         <div className="steps-action">
