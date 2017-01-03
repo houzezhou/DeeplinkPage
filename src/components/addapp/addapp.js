@@ -1,5 +1,6 @@
 import React from 'react'
 import { Input,Button,Steps,message } from 'antd';
+import ContentSteps from './ContentSteps.js'
 import './addapp.css';
 
 const Step = Steps.Step;
@@ -14,47 +15,6 @@ const steps = [{
   title: 'Last',
   content: 'Last-content',
 }];
-
-//contents
-class ContentSteps extends React.Component {
-  constructor(props){
-    super(props);
-
-  }
-
-  render(){
-    switch (this.props.title){
-      case 'First' :{
-        return(
-          <div>
-            <span>应用名称</span> : <Input size="large" className="ct_input" value={this.props.username}/><br/>
-          </div>
-        )
-      }
-      case 'Second' : {
-        return(
-          <div>
-            <span>phone</span> : <Input size="large" className="ct_input" value={this.props.phone}/><br/>
-          </div>
-        )
-      }
-      case 'Last' : {
-        return(
-          <div>
-            <span>name</span> : <Input size="large" className="ct_input" value={this.props.name}/><br/>
-          </div>
-        )
-      }
-      default : {
-        return(
-          <div>
-            <span>应用名称</span> : <Input size="large" className="ct_input" value={this.props.phone}/><br/>
-          </div>
-        )
-      }
-    }
-  }
-}
 
 export default class Addapp extends React.Component {
   constructor(props) {
