@@ -26,7 +26,6 @@ export default class Topbar extends React.Component {
             '最近三天': [moment().day(-1), moment()]
     	}
         const { isShow, myfunction, username, name } = this.props;
-        debugger
     	return(
     		<div onClick={myfunction} className="topbar_box">
                 <span style={{fontSize:'15px',display: isShow ? '' : 'none'}}> <Icon type="calendar" />  时段选择 ：</span> 

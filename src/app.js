@@ -17,7 +17,7 @@ import Topbar from './containers/topbarC.js';
 import myAccount from './containers/accountC.js';
 import myPromote from './components/promote/table_promote.js';
 import myAnalyze from './components/analyze/table_analyze.js';
-import myTable from './components/table/table_promote.js';
+//import myTable from './components/table/table_promote.js';
 import myForm from './components/form.js';
 import myProgress from './components/progress.js';
 import myCarousel from './components/carousel.js';
@@ -97,7 +97,7 @@ class DeeplinkApp extends React.Component {
 
                         <SubMenu key="sub2" title={<span><Icon type="mail" /><span>管理中心</span></span>}>
                             <Menu.Item key="5"><Link to="/myAccount">账号管理</Link></Menu.Item>                           
-                            <Menu.Item key="6"><Link to="/myTable">筛选表格</Link></Menu.Item>
+                            {/*<Menu.Item key="6"><Link to="/myTable">筛选表格</Link></Menu.Item>*/}
                             {/*<Menu.Item key="7"><Link to="/myCarousel">轮播</Link></Menu.Item>
                             <Menu.Item key="8"><Link className="homeleftlink" to="/myProgress">进度条</Link></Menu.Item>*/}
                         </SubMenu>
@@ -129,7 +129,7 @@ ReactDom.render((
                 {/*<Route path="myProgress" component={myProgress} />
                 <Route path="myCarousel" component={myCarousel} />*/}
                 <Route path="myChart" component={myChart} />
-                <Route path="myTable" component={myTable} />
+                {/*<Route path="myTable" component={myTable} />*/}
                 <Route path="myApplist" component={myApplist} />
                 <Route path="myAddapp" component={myAddapp} />
             </Route>
