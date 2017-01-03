@@ -23,6 +23,7 @@ import myProgress from './components/progress.js';
 import myCarousel from './components/carousel.js';
 import myChart from './components/chart.js';
 import myApplist from './containers/applistC.js';
+import myAddapp from './containers/addappC.js';
 // import myCalendar from './calendar.js';
 
 
@@ -34,11 +35,12 @@ let routeMap = {
     '/myCarousel': '4',
     '/myChart': '5',
     '/myAnalyze': '6',
-    '/myApplist': '7'
+    '/myApplist': '7',
+    '/myAddapp': '8'
 };
 
 // 配置导航
-class Sider extends React.Component {
+class DeeplinkApp extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -76,7 +78,7 @@ class Sider extends React.Component {
                     <Menu theme="dark"
                         onClick={this.handleClick.bind(this)}
                         style={{ width: 200 }}
-                        defaultOpenKeys={['sub1', 'sub2']}
+                        defaultOpenKeys={['sub1', 'sub2', 'sub3']}
                         defaultSelectedKeys={[this.state.current]}
                         mode="inline"
                     >   
@@ -90,7 +92,7 @@ class Sider extends React.Component {
 
                         <SubMenu key="sub3" title={<span><Icon type="mail" /><span>应用中心</span></span>}>
                             <Menu.Item key="7"><Link to="/myApplist">应用列表</Link></Menu.Item>                           
-                            <Menu.Item key="8"><Link to="/myTable">应用概览</Link></Menu.Item>
+                            <Menu.Item key="8"><Link to="/myAddapp">创建应用</Link></Menu.Item>
                         </SubMenu>
 
                         <SubMenu key="sub2" title={<span><Icon type="mail" /><span>管理中心</span></span>}>
@@ -118,7 +120,7 @@ const store = configerStore();
 ReactDom.render((
     <Provider store={store}>
         <Router history={hashHistory} >
-            <Route path="/" component={Sider}>
+            <Route path="/" component={DeeplinkApp}>
                 <IndexRoute component={myPromote} />
                 <Route path="myAccount" component={myAccount} /*onEnter={this.isShowtopBar}*//>
                 <Route path="myPromote" component={myPromote} />
@@ -129,6 +131,7 @@ ReactDom.render((
                 <Route path="myChart" component={myChart} />
                 <Route path="myTable" component={myTable} />
                 <Route path="myApplist" component={myApplist} />
+                <Route path="myAddapp" component={myAddapp} />
             </Route>
         </Router>
     </Provider>
