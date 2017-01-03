@@ -2,47 +2,6 @@ import React from 'react'
 import { Input,Button,Steps,message } from 'antd';
 import './addapp.css';
 
-//first content
-class ContentSteps extends React.Component {
-  constructor(props){
-    super(props);
-
-  }
-
-  render(){
-    switch (this.props.title){
-      case 'First' :{
-        return(
-          <div>
-            <span>应用名称</span> : <Input size="large" className="ct_input" value={this.props.phone}/><br/>
-          </div>
-        )
-      }
-      case 'Second' : {
-        return(
-          <div>
-            <span>二</span> : <Input size="large" className="ct_input" value={this.props.phone}/><br/>
-          </div>
-        )
-      }
-      case 'Last' : {
-        return(
-          <div>
-            <span>三</span> : <Input size="large" className="ct_input" value={this.props.phone}/><br/>
-          </div>
-        )
-      }
-      default : {
-        return(
-          <div>
-            <span>应用名称</span> : <Input size="large" className="ct_input" value={this.props.phone}/><br/>
-          </div>
-        )
-      }
-    }
-  }
-}
-
 const Step = Steps.Step;
 
 const steps = [{
@@ -56,6 +15,46 @@ const steps = [{
   content: 'Last-content',
 }];
 
+//contents
+class ContentSteps extends React.Component {
+  constructor(props){
+    super(props);
+
+  }
+
+  render(){
+    switch (this.props.title){
+      case 'First' :{
+        return(
+          <div>
+            <span>应用名称</span> : <Input size="large" className="ct_input" value={this.props.username}/><br/>
+          </div>
+        )
+      }
+      case 'Second' : {
+        return(
+          <div>
+            <span>phone</span> : <Input size="large" className="ct_input" value={this.props.phone}/><br/>
+          </div>
+        )
+      }
+      case 'Last' : {
+        return(
+          <div>
+            <span>name</span> : <Input size="large" className="ct_input" value={this.props.name}/><br/>
+          </div>
+        )
+      }
+      default : {
+        return(
+          <div>
+            <span>应用名称</span> : <Input size="large" className="ct_input" value={this.props.phone}/><br/>
+          </div>
+        )
+      }
+    }
+  }
+}
 
 export default class Addapp extends React.Component {
   constructor(props) {
@@ -85,9 +84,9 @@ export default class Addapp extends React.Component {
         </Steps>
         <div className="steps-content">
 
-          <ContentSteps title={ steps[this.state.current].title } phone={phone} >
-            {steps[this.state.current].content}
-          </ContentSteps>
+          <ContentSteps title={ steps[this.state.current].title } phone={phone} username={username} name={name}/>
+          <br/>
+          {steps[this.state.current].content}
 
         </div>
         <div className="steps-action">

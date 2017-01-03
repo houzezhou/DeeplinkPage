@@ -17,10 +17,10 @@ export default class myAccount extends React.Component {
     }
     render() {
         const { username, name, QQ, company, phone, dispatch, save } = this.props;
-        dispatch({
+        /*dispatch({
             type: 'TOPBAR',
             isShow: false
-        })
+        })*/
         return (
             <div className="card-container">
                 <div style={{margin:'20px'}}>账号管理</div>

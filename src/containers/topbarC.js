@@ -6,14 +6,13 @@ const mapStateToProps = (state) => {
     const{
         //age,
         username,
-        test,
-        isShow
+        name
     } = state.userinfo;
-
+    const isShow = state.isShow;
     return{
         //age,
         username,
-        test,
+        name,
         isShow
     }
 }
