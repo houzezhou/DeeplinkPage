@@ -52,6 +52,7 @@ class EditableCell extends React.Component {
 export default class EditableTable extends React.Component {
   constructor(props) {
     super(props);
+
     this.columns = [{
       title: 'name',
       dataIndex: 'name',
@@ -89,6 +90,7 @@ export default class EditableTable extends React.Component {
         </div>);
       },
     }];
+
     this.state = {
       data: [{
         key: '0',
@@ -114,11 +116,13 @@ export default class EditableTable extends React.Component {
           value: '39',
         },
         address: {
+          editable: false,
           value: 'hzz, Park Lane no. 0',
         },
       }],
     };
   }
+
   renderColumns(data, index, key, text) {
     const { editable, status } = data[index][key];
     if (typeof editable === 'undefined') {
@@ -135,6 +139,7 @@ export default class EditableTable extends React.Component {
     const { data } = this.state;
     data[index][key].value = value;
     this.setState({ data });
+    //debugger
   }
   edit(index) {
     const { data } = this.state;
@@ -161,6 +166,7 @@ export default class EditableTable extends React.Component {
       });
     });
   }
+  
   render() {
     const { data } = this.state;
     const dataSource = data.map((item) => {
