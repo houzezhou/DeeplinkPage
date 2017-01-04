@@ -152,10 +152,10 @@ export default class myTable extends React.Component {
             title: '操作',
             width: '15%',
             dataIndex: 'operate',
-            render(text) {
+            render(text,index) {
                 return (
                   <div>
-                    <a href={text} target="_blank"><Button type="primary">分析</Button></a>
+                    <Link to={{pathname:'/myChart',query:{id:text}}}><Button type="primary">分析</Button></Link>
                     <Button style={{marginLeft:'10px'}} onClick={_this.showModal.bind(_this)} type="default">编辑</Button>
                   </div>  
                 )
