@@ -28,10 +28,10 @@ export default class Topbar extends React.Component {
         const { isShow, myfunction, username, name } = this.props;
     	return(
     		<div onClick={myfunction} className="topbar_box">
-                <span style={{fontSize:'15px',display: isShow ? '' : 'none'}}> <Icon type="calendar" />  时段选择 ：</span> 
+                {/*<span style={{fontSize:'15px',display: isShow ? '' : 'none'}}> <Icon type="calendar" />  时段选择 ：</span> 
                 <RangePicker style={{marginTop:'10px',display: isShow ? '' : 'none'}}
                   ranges={ ranges }
-                />            
+                />            */}
                 <Menu mode="horizontal" style={{float:'right'}}>              
                     <SubMenu title={<span><Icon type="user" />{ this.props.username }</span>}>
                         <Menu.Item key="setting:1">退出</Menu.Item>

@@ -12,15 +12,15 @@ module.exports = {
     },*/
     entry: {
         main: './src/entry.js', //唯一入口文件
-        //appsetting: './src/containers/appsettingC.js'
+        add: './src/containers/addappC.js'
     },
     output: {
         //path: './build', //打包后的文件存放的地方
         path: path.join(__dirname, 'build'),
-        filename: 'main.js', //打包后输出文件的文件名
-        //filename: 'js/[name].js',
+        //filename: 'main.js', //打包后输出文件的文件名
+        filename: 'js/[name].js',
         publicPath: 'http://localhost:8888/build/',  //启动本地服务后的根目录
-        //chunkFilename: 'appsetting.js',
+        //chunkFilename: '[name].[chunkhash:5].chunk.js',
     },
 
     module: {
