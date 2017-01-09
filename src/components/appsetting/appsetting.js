@@ -1,9 +1,11 @@
 import React from 'react'
-import { Input,Button,Upload,Icon,Modal,Popconfirm, message,Collapse } from 'antd';
+import { Input,Button,Upload,Icon,Modal,Popconfirm, message,Collapse,Form,Switch,Tooltip } from 'antd';
 import './appsetting.css';
 import RegistrationForm from './form.js';
 
-//图片上传
+const FormItem = Form.Item;
+
+//图片上传组件
 class PicturesWall extends React.Component {
   state = {
     previewVisible: false,
@@ -58,6 +60,94 @@ class PicturesWall extends React.Component {
 const Panel = Collapse.Panel;
 
 
+//IOSForm组件
+const IOSForm = Form.create()(React.createClass({
+  getInitialState() {
+    return {
+      switchshow: false,
+    };
+  },
+  handleSubmit(e) {
+    e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        console.log('Received values of form: ', values);
+      }
+    });
+  },
+  switchtOnchange(){
+    this.setState({
+      switchshow: this.state.switchshow ? false : true
+    });
+  },
+  render() {
+    const { getFieldDecorator } = this.props.form;
+    return (
+      <Form onSubmit={this.handleSubmit}>
+        
+        <FormItem label="URI Scheme" labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
+          {getFieldDecorator('URI_Scheme', {
+            rules: [{ required: true, message: 'Please input your note!' }],
+          })(
+            <Input placeholder="示例 ：aaa.bbb.ccc"/>
+          )}
+        </FormItem>
+
+        <FormItem label={(
+            <span>
+              已经实现 Universal links&nbsp;
+              <Tooltip title="Universal Links为iOS官方深度链接标准，仅iOS 9.0以上系统支持，可实现应用间无缝跳转。">
+                <Icon type="question-circle-o" />
+              </Tooltip>
+            </span>
+          )} labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}
+        >
+
+          {getFieldDecorator('URI Scheme', {
+            valuePropName : 'checked'
+          })(
+            <Switch onChange={this.switchtOnchange.bind(this)}/>
+          )}
+
+        </FormItem>
+
+        <div style={{display:this.state.switchshow ? 'block' : 'none'}}>
+          <FormItem label="Bundle ID" labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
+            <Input placeholder="示例 ：aaa.bbb.ccc" />
+          </FormItem>
+
+          <FormItem label="Apple App Prefix" labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
+            <Input placeholder="示例 ：aaa.bbb.ccc" />
+          </FormItem>
+
+          <FormItem label="Universal links" labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
+            <Input placeholder="示例 ：aaa.bbb.ccc" />
+          </FormItem>
+        </div>
+
+        <FormItem label="浏览器下载地址" labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
+          {getFieldDecorator('浏览器下载地址', {
+            rules: [{ required: true, message: 'Please input your note!' }],
+          })(
+            <Input placeholder="示例 ：aaa.bbb.ccc"/>
+          )}
+        </FormItem>
+
+        <FormItem label="应用宝下载地址" labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
+          <Input placeholder="示例 ：aaa.bbb.ccc" />
+        </FormItem>
+
+        <FormItem wrapperCol={{ span: 2, offset: 9 }}>
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+        </FormItem>
+      </Form>
+    );
+  },
+}));
+
+
 export default class Appsetting extends React.Component {
   constructor(props) {
     super(props);
@@ -81,6 +171,15 @@ export default class Appsetting extends React.Component {
     //折叠面板部分
     function callback(key) {
       console.log(key);
+    }
+
+    function handleSubmit(e) {
+      e.preventDefault();
+      this.props.form.validateFields((err, values) => {
+        if (!err) {
+          console.log('Received values of form: ', values);
+        }
+      });
     }
 
     return (
@@ -115,16 +214,7 @@ export default class Appsetting extends React.Component {
           <Collapse defaultActiveKey={['1','2']} onChange={callback} style={{marginTop:'20px'}}>
             <Panel header="是否有IOS应用？（点击展开）" key="1">
               <div className="IOSApp">
-              <form>
-                <span>* Bundle ID</span><br/>
-                <Input placeholder="示例 ：aaa.bbb.ccc" /><br/><br/>
-                <span>* Apple App Prefix</span><br/>
-                <Input placeholder="示例 ：aaa.bbb.ccc" /><br/><br/>
-                <span>* Apple App Prefix</span><br/>
-                <Input placeholder="示例 ：aaa.bbb.ccc" /><br/><br/>
-                <span>* Apple App Prefix</span><br/>
-                <Input placeholder="示例 ：aaa.bbb.ccc" /><br/><br/>
-              </form>
+                <IOSForm/>
               </div>
             </Panel>
             
