@@ -74,6 +74,13 @@ const IOSForm = Form.create()(React.createClass({
         console.log('Received values of form: ', values);
       }
     });
+    var obj = this.props.form.getFieldsValue([
+      'URI_Scheme', 
+      'switch_check', 
+      'brow_down_url', 
+      'yyb_down_url'
+    ]);
+    alert(JSON.stringify(obj))
   },
   switchtOnchange(){
     this.setState({
@@ -81,7 +88,7 @@ const IOSForm = Form.create()(React.createClass({
     });
   },
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const { getFieldDecorator,getFieldProps } = this.props.form;
     return (
       <Form onSubmit={this.handleSubmit}>
         
@@ -103,7 +110,7 @@ const IOSForm = Form.create()(React.createClass({
           )} labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}
         >
 
-          {getFieldDecorator('URI Scheme', {
+          {getFieldDecorator('switch_check', {
             valuePropName : 'checked'
           })(
             <Switch onChange={this.switchtOnchange.bind(this)}/>
@@ -113,20 +120,32 @@ const IOSForm = Form.create()(React.createClass({
 
         <div style={{display:this.state.switchshow ? 'block' : 'none'}}>
           <FormItem label="Bundle ID" labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
-            <Input placeholder="示例 ：aaa.bbb.ccc" />
+            {getFieldDecorator('Bundle_ID', {
+              rules: this.state.switchshow ? [{ required: true, message: 'Please input your note!' }] : '',
+            })(
+              <Input placeholder="示例 ：aaa.bbb.ccc"/>
+            )}
           </FormItem>
 
           <FormItem label="Apple App Prefix" labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
-            <Input placeholder="示例 ：aaa.bbb.ccc" />
+            {getFieldDecorator('Apple_App_Prefix', {
+              rules: this.state.switchshow ? [{ required: true, message: 'Please input your note!' }] : '',
+            })(
+              <Input placeholder="示例 ：aaa.bbb.ccc"/>
+            )}
           </FormItem>
 
           <FormItem label="Universal links" labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
-            <Input placeholder="示例 ：aaa.bbb.ccc" />
+            {getFieldDecorator('Universal_links', {
+              rules: this.state.switchshow ? [{ required: true, message: 'Please input your note!' }] : '',
+            })(
+              <Input placeholder="示例 ：aaa.bbb.ccc"/>
+            )}
           </FormItem>
         </div>
 
         <FormItem label="浏览器下载地址" labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
-          {getFieldDecorator('浏览器下载地址', {
+          {getFieldDecorator('brow_down_url', {
             rules: [{ required: true, message: 'Please input your note!' }],
           })(
             <Input placeholder="示例 ：aaa.bbb.ccc"/>
@@ -134,7 +153,7 @@ const IOSForm = Form.create()(React.createClass({
         </FormItem>
 
         <FormItem label="应用宝下载地址" labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
-          <Input placeholder="示例 ：aaa.bbb.ccc" />
+          <Input {...getFieldProps('yyb_down_url')} placeholder="示例 ：aaa.bbb.ccc" />
         </FormItem>
 
         <FormItem wrapperCol={{ span: 2, offset: 9 }}>
@@ -220,7 +239,7 @@ export default class Appsetting extends React.Component {
             
             <Panel header="是否有Android应用？（点击展开）" key="2" style={{marginTop:'20px'}}>
               <div className="AndroidApp">
-                <RegistrationForm/>
+                <IOSForm/>
               </div>
             </Panel>
           </Collapse>
