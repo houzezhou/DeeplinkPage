@@ -166,6 +166,108 @@ const IOSForm = Form.create()(React.createClass({
   },
 }));
 
+//AndroidForm组件
+const AndroidForm = Form.create()(React.createClass({
+  /*getInitialState() {
+    return {
+      switchshow: false,
+    };
+  },*/
+  handleSubmit(e) {
+    e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        console.log('Received values of form: ', values);
+      }
+    });
+    var obj = this.props.form.getFieldsValue([
+      'URI_Scheme', 
+      '别名', 
+      '地址',
+      'brow_down_url', 
+      'yyb_down_url'
+    ]);
+    alert(JSON.stringify(obj))
+  },
+  render() {
+    const { getFieldDecorator,getFieldProps } = this.props.form;
+    return (
+      <Form onSubmit={this.handleSubmit}>
+        
+        <FormItem label="URI Scheme" labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
+          {getFieldDecorator('URI_Scheme', {
+            rules: [{ required: true, message: 'Please input your note!' }],
+          })(
+            <Input placeholder="示例 ：aaa.bbb.ccc"/>
+          )}
+        </FormItem>
+
+        <FormItem label="package" labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
+          {getFieldDecorator('Bundle_ID', {
+            rules: [{ required: true, message: 'Please input your note!' }],
+          })(
+            <Input placeholder="示例 ：aaa.bbb.ccc"/>
+          )}
+        </FormItem>
+
+        <FormItem label="Upload" labelCol= {{ span: 5 }} wrapperCol= {{ span: 12 }} extra="请传XXXXX." >
+          {getFieldDecorator('upload', {
+            valuePropName: 'fileList',
+            normalize: function normFile(e) {
+              if (Array.isArray(e)) {
+                return e;
+              }
+              return e && e.fileList;
+            },
+            rules: [{ required: true, message: 'Please input your note!' }],
+          })(
+            <Upload name="logo" action="/upload.do" listType="picture" onChange={this.handleUpload}>
+              <Button type="ghost">
+                <Icon type="upload" /> Click to upload
+              </Button>
+            </Upload>
+          )}
+        </FormItem>
+
+        <FormItem label="浏览器下载地址" labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
+          {getFieldDecorator('brow_down_url', {
+            rules: [{ required: true, message: 'Please input your note!' }],
+          })(
+            <Input placeholder="示例 ：aaa.bbb.ccc"/>
+          )}
+        </FormItem>
+
+        <FormItem label="应用宝下载地址" labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
+          <Input {...getFieldProps('yyb_down_url')} placeholder="示例 ：aaa.bbb.ccc" />
+        </FormItem>
+
+        <FormItem label="别名" labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
+          {getFieldDecorator('别名', {
+            rules: [{ required: true, message: 'Please input your note!' }],
+          })(
+            <Input placeholder="示例 ：aaa.bbb.ccc"/>
+          )}
+        </FormItem>
+
+        <FormItem label="地址" labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
+          {getFieldDecorator('地址', {
+            rules: [{ required: true, message: 'Please input your note!' }],
+          })(
+            <Input placeholder="示例 ：aaa.bbb.ccc"/>
+          )}
+        </FormItem>
+
+        <FormItem wrapperCol={{ span: 2, offset: 9 }}>
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+        </FormItem>
+
+      </Form>
+    );
+  },
+}));
+
 
 export default class Appsetting extends React.Component {
   constructor(props) {
@@ -239,7 +341,7 @@ export default class Appsetting extends React.Component {
             
             <Panel header="是否有Android应用？（点击展开）" key="2" style={{marginTop:'20px'}}>
               <div className="AndroidApp">
-                <IOSForm/>
+                <AndroidForm/>
               </div>
             </Panel>
           </Collapse>
