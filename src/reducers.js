@@ -8,6 +8,8 @@ const userinfo = {
 const initState = {
 	userinfo: userinfo,
 	isShow: true,
+	myappID: 'klUpV8kVFu',
+	myappName: '安安'
 };
 
 const myReducer = (state = initState,action) => {
@@ -27,6 +29,12 @@ const myReducer = (state = initState,action) => {
 		case 'TOPBAR' : {
 			return Object.assign({},state,{
 				isShow: action.isShow
+			})
+		}
+		case 'MYAPP' : {
+			return Object.assign({},state,{
+				myappID: action.myappID,
+				myappName: action.myappName
 			})
 		}
 		default:

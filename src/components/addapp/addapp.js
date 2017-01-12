@@ -13,6 +13,7 @@ class Addapp extends React.Component {
   }
 
   handleSubmit(e) {
+    const { dispatch }  = this.props;
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
@@ -39,16 +40,45 @@ class Addapp extends React.Component {
           return response.json();
         })
         .then(function(json) {
+          var myappID = json.objectId;
+          var myappName = values.appName;
+          dispatch({
+            type: 'MYAPP',
+            myappID: myappID,
+            myappName: myappName
+          })
           console.log(json)
         });
       }
     });
   }
+
+  getuserdata(){
+    var myHeaders = new Headers({
+      'X-Parse-Application-Id': 'deeplink',
+      'X-Parse-REST-API-Key': 'f07u39HX6223UE0Pv3mYfsSFY5qNdEZ5',
+      'Content-Type': 'application/json'
+    });
+    var myInit = {
+      method: 'GET',
+      headers: myHeaders,
+      mode: 'cors',
+      cache: 'default',
+    };
+    fetch('http://10.176.30.204:8002/db/classes/App/'+'lBYyIVcXWo',myInit)
+    .then(function(response) {
+      //console.log(response)
+      return response.json();
+    })
+    .then(function(json) {
+      console.log(json)
+    });
+  }
   
   render() {
 
-    //const { username, name, QQ, company, phone, dispatch, save } = this.props;  
-    const { getFieldDecorator } = this.props.form; 
+    const { username, name, QQ, company, phone, dispatch, save } = this.props;  
+    const { getFieldDecorator } = this.props.form;
 
     return (
       <div style={{marginTop:'100px'}}>

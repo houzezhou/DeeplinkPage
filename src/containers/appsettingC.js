@@ -5,18 +5,15 @@ import myAppsetting from '../components/appsetting/appsetting.js'
 const mapStateToProps = (state) => {
     const{
         username,
-        name,
-        phone,
-        QQ,
-        company
+        QQ
     } = state.userinfo;
+
+    const{ myappID,myappName } = state;
 
     return{
         username,
-        name,
-        phone,
-        QQ,
-        company
+        myappID,
+        myappName
     }
 }
 

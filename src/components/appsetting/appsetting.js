@@ -5,53 +5,65 @@ import RegistrationForm from './form.js';
 
 const FormItem = Form.Item;
 
+var myHeaders = new Headers({
+  'X-Parse-Application-Id': 'deeplink',
+  'X-Parse-REST-API-Key': 'f07u39HX6223UE0Pv3mYfsSFY5qNdEZ5',
+  'Content-Type': 'application/json'
+});
+
 //图片上传组件
-class PicturesWall extends React.Component {
+class Avatar extends React.Component {
   state = {
-    previewVisible: false,
-    previewImage: '',
-    fileList: [{
-      uid: -1,
-      name: 'xxx.png',
-      status: 'done',
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-    }],
+    imageUrl: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
   };
 
-  handleCancel = () => this.setState({ previewVisible: false })
-
-  handlePreview = (file) => {
-    this.setState({
-      previewImage: file.url || file.thumbUrl,
-      previewVisible: true,
-    });
+  getBase64 = (img, callback) => {
+    const reader = new FileReader();
+    reader.addEventListener('load', () => callback(reader.result));
+    reader.readAsDataURL(img);
   }
 
-  handleChange = ({ fileList }) => this.setState({ fileList })
+  handleChange = (info) => {
+    if (info.file.status === 'done') {
+      // Get this url from response in real world.
+      this.getBase64(info.file.originFileObj, imageUrl => this.setState({ imageUrl }));
+    }
+  }
+
+  beforeUpload = (file) => {
+    const isJPG = file.type === 'image/jpeg';
+    if (!isJPG) {
+      message.error('You can only upload JPG file!');
+    }
+    const isLt2M = file.size / 1024 / 1024 < 2;
+    if (!isLt2M) {
+      message.error('Image must smaller than 2MB!');
+    }
+    return isJPG && isLt2M;
+  }
 
   render() {
-    const { previewVisible, previewImage, fileList } = this.state;
-    const uploadButton = (
-      <div>
-        <Icon type="plus" />
-        <div className="ant-upload-text">Upload</div>
-      </div>
-    );
+    const imageUrl = this.state.imageUrl;
     return (
-      <div className="clearfix">
-        <Upload
-          action="/upload.do"
-          listType="picture-card"
-          fileList={fileList}
-          onPreview={this.handlePreview}
-          onChange={this.handleChange}
-        >
-          {fileList.length >= 3 ? null : uploadButton}
-        </Upload>
-        <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-          <img alt="example" style={{ width: '100%' }} src={previewImage} />
-        </Modal>
-      </div>
+      <Upload
+        className="avatar-uploader"
+        name="avatar"
+        showUploadList={false}
+        action="http://10.176.30.204:8002/db/files/h.jpg"
+        headers={{
+          'X-Parse-Application-Id' : 'deeplink',
+          'X-Parse-REST-API-Key' : 'f07u39HX6223UE0Pv3mYfsSFY5qNdEZ5',
+          'Content-Type' : 'image/jpeg',
+        }}
+        beforeUpload={this.beforeUpload}
+        onChange={this.handleChange}
+      >
+        {
+          imageUrl ?
+            <img src={imageUrl} alt="" className="avatar" /> :
+            <Icon type="plus" className="avatar-uploader-trigger" />
+        }
+      </Upload>
     );
   }
 }
@@ -67,20 +79,60 @@ const IOSForm = Form.create()(React.createClass({
       switchshow: false,
     };
   },
+  componentDidMount(){
+    const myappID = this.props.myappID;
+    const _this = this;
+
+    var myInit = {
+      method: 'GET',
+      headers: myHeaders,
+      mode: 'cors',
+      cache: 'default',
+    };
+    fetch('http://10.176.30.204:8002/db/classes/App/'+ myappID, myInit)
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(json) {
+      console.log(json)
+      _this.props.form.setFieldsValue({
+        'have_universal' : json.IOS.have_universal,
+        'Apple_App_Prefix': json.IOS.Apple_App_Prefix, 
+        'Bundle_ID': json.IOS.Bundle_ID,
+        'Universal_links': json.IOS.Universal_links,
+        'URI_Scheme' : json.IOS.URI_Scheme,
+        'brow_down_url' : json.IOS.brow_down_url,
+        'yyb_down_url' : json.IOS.yyb_down_url,
+      });
+      _this.setState({
+        switchshow: json.IOS.have_universal
+      });
+    });
+  },
   handleSubmit(e) {
     e.preventDefault();
+    const myappID = this.props.myappID;
+    const setFieldsValue = this.props.form.setFieldsValue;
     this.props.form.validateFields((err, values) => {
       if (!err) {
+        if (this.state.switchshow != true){
+          values.have_universal = false;
+          setFieldsValue({'Apple_App_Prefix':'', 'Bundle_ID':'', 'Universal_links':''});
+          values.Apple_App_Prefix = '';
+          values.Bundle_ID = '';
+          values.Universal_links = '';
+        }
         console.log('Received values of form: ', values);
+        var myInit = {
+          method: 'PUT',
+          headers: myHeaders,
+          mode: 'cors',
+          cache: 'default',
+          body: JSON.stringify({ 'IOS' : values })
+        };
+        fetch('http://10.176.30.204:8002/db/classes/App/'+ myappID, myInit)
       }
     });
-    var obj = this.props.form.getFieldsValue([
-      'URI_Scheme', 
-      'switch_check', 
-      'brow_down_url', 
-      'yyb_down_url'
-    ]);
-    alert(JSON.stringify(obj))
   },
   switchtOnchange(){
     this.setState({
@@ -110,7 +162,7 @@ const IOSForm = Form.create()(React.createClass({
           )} labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}
         >
 
-          {getFieldDecorator('switch_check', {
+          {getFieldDecorator('have_universal', {
             valuePropName : 'checked'
           })(
             <Switch onChange={this.switchtOnchange.bind(this)}/>
@@ -269,7 +321,7 @@ const AndroidForm = Form.create()(React.createClass({
 }));
 
 
-export default class Appsetting extends React.Component {
+class Appsetting extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -279,10 +331,33 @@ export default class Appsetting extends React.Component {
   
   render() {
 
-    const { username, name, QQ, company, phone, dispatch, save } = this.props;
+    const { username, myappID, myappName, dispatch, save } = this.props;
+    const{ setFieldsValue } = this.props.form;
 
-    //Popconfirm部分
+    //Popconfirm 删除应用 部分
     function confirm() {
+
+      var myInit = {
+        method: 'DELETE',
+        headers: myHeaders,
+        mode: 'cors',
+        cache: 'default',
+      };
+
+      fetch('http://10.176.30.204:8002/db/classes/App/'+ myappID, myInit)
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(json) {
+        dispatch({
+          type: 'MYAPP',
+          myappID: '',
+          myappName: ''
+        })
+        setFieldsValue({appName:''});
+        console.log(json)
+      });
+
       message.success('Deleted');
     };
     /*function cancel() {
@@ -294,60 +369,89 @@ export default class Appsetting extends React.Component {
       console.log(key);
     }
 
-    function handleSubmit(e) {
+    function handleSubmitSave(e) {
       e.preventDefault();
       this.props.form.validateFields((err, values) => {
         if (!err) {
           console.log('Received values of form: ', values);
+          var myInit = {
+            method: 'PUT',
+            headers: myHeaders,
+            mode: 'cors',
+            cache: 'default',
+            body: JSON.stringify(values)
+          };
+
+          fetch('http://10.176.30.204:8002/db/classes/App/'+ myappID, myInit)
+          .then(function(response) {
+            //console.log(response)
+            return response.json();
+          })
+          .then(function(json) {
+            var myappName = values.appName;
+            dispatch({
+              type: 'MYAPP',
+              myappID: myappID,
+              myappName: myappName
+            })
+            console.log(json)
+          });
+
         }
       });
     }
-
+    const { getFieldDecorator } = this.props.form;
     return (
       <div className="SetContent">
-          <div className="appInfo">
-            <span>应用名称 : </span>
-            <Input size="large" className="ct_input" value={this.props.username}/>
-            <br/>
-            <br/>
+        <div className="appInfo">
+          <Form>
+            
+            <FormItem  label={(<span>应用名称 </span>)} labelCol={{ span: 3 }} wrapperCol={{ span: 10, offset: 1 }}>
+              {getFieldDecorator('appName',{
+                initialValue: this.props.myappName
+              })(
+                <Input size="large"/>
+              )}
+            </FormItem>
 
-            <span>应用 key : </span>
-            <Input size="large" className="ct_input" value={this.props.QQ}/>
-            <br/>
-            <br/>
+            <FormItem  label={(<span>应用 key </span>)} labelCol={{ span: 3 }} wrapperCol={{ span: 10, offset: 1 }}>
+                <Input size="large" value={this.props.myappID} disabled/>
+            </FormItem>
 
-            <span style={{display:'inline-box',float:'left'}}>应用头像 : </span>
-            <div style={{float:'left',marginLeft:'20px'}}>
-              <PicturesWall/>
-            </div>
-            <div style={{clear:'both'}}></div>
+            <FormItem label="应用头像 " labelCol= {{ span: 3 }} wrapperCol= {{ span: 10, offset: 1 }} extra="点击图片可修改" >            
+              <Avatar/>
+            </FormItem>
+
             <div className="Buttonbox">
-              <Button type="primary">保存信息</Button>
+              <Button type="primary" onClick={handleSubmitSave.bind(this)}>保存信息</Button>
 
               <Popconfirm title="Are you sure delete this app?" onConfirm={confirm} okText="Yes" cancelText="No">
                 <Button type="default" style={{marginLeft:'50px'}}>删除App</Button>
               </Popconfirm>
               
             </div>
-          </div>
+          </Form>  
+        </div>
 
 
-          <Collapse defaultActiveKey={['1','2']} onChange={callback} style={{marginTop:'20px'}}>
-            <Panel header="是否有IOS应用？（点击展开）" key="1">
-              <div className="IOSApp">
-                <IOSForm/>
-              </div>
-            </Panel>
-            
-            <Panel header="是否有Android应用？（点击展开）" key="2" style={{marginTop:'20px'}}>
-              <div className="AndroidApp">
-                <AndroidForm/>
-              </div>
-            </Panel>
-          </Collapse>
+        <Collapse defaultActiveKey={['1','2']} onChange={callback} style={{marginTop:'20px'}}>
+          <Panel header="是否有IOS应用？（点击展开）" key="1">
+            <div className="IOSApp">
+              <IOSForm myappID={ myappID }/>
+            </div>
+          </Panel>
+          
+          <Panel header="是否有Android应用？（点击展开）" key="2" style={{marginTop:'20px'}}>
+            <div className="AndroidApp">
+              <AndroidForm/>
+            </div>
+          </Panel>
+        </Collapse>
 
 
       </div>
     );
   }
 }
+
+export default Form.create()(Appsetting);

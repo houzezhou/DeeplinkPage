@@ -2,3 +2,22 @@
 .appInfo{padding: 20px;border:1px solid #ccc;border-radius:5px;}
 .ct_input{margin-left: 18px;}
 .Buttonbox{padding-top:15px;border-top: 1px dashed #ccc;text-align: center;}
+
+.avatar-uploader,
+.avatar-uploader-trigger,
+.avatar {
+  width: 70px;
+  height: 70px;
+}
+.avatar-uploader {
+  display: block;
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.avatar-uploader-trigger {
+  display: table-cell;
+  vertical-align: middle;
+  font-size: 28px;
+  color: #999;
+}
