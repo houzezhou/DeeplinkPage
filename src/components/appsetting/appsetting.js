@@ -10,12 +10,37 @@ var myHeaders = new Headers({
   'X-Parse-REST-API-Key': 'f07u39HX6223UE0Pv3mYfsSFY5qNdEZ5',
   'Content-Type': 'application/json'
 });
+var __upload_resUrl, __upload_resApk;
 
 //图片上传组件
 class Avatar extends React.Component {
+  componentWillMount = ()=>{
+    const myappID = this.props.myappID;
+    const _this = this;
+    var myInit = {
+      method: 'GET',
+      headers: myHeaders,
+      mode: 'cors',
+      cache: 'default',
+    };
+    //进入页面，请求IOS数据，填充内容
+    fetch('http://10.176.30.204:8002/db/classes/App/'+ myappID, myInit)
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(json) {
+      console.log(json);
+      __upload_resUrl = json.imageUrl;
+      if(__upload_resUrl){
+        _this.setState({imageUrl:__upload_resUrl})
+      }
+
+    });
+  }
+
   state = {
-    imageUrl: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
-  };
+    imageUrl:'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
+  }
 
   getBase64 = (img, callback) => {
     const reader = new FileReader();
@@ -26,7 +51,9 @@ class Avatar extends React.Component {
   handleChange = (info) => {
     if (info.file.status === 'done') {
       // Get this url from response in real world.
+      console.log(info,'dd')
       this.getBase64(info.file.originFileObj, imageUrl => this.setState({ imageUrl }));
+      __upload_resUrl = info.file.response.url;
     }
   }
 
@@ -35,11 +62,11 @@ class Avatar extends React.Component {
     if (!isJPG) {
       message.error('You can only upload JPG file!');
     }
-    const isLt2M = file.size / 1024 / 1024 < 2;
-    if (!isLt2M) {
-      message.error('Image must smaller than 2MB!');
+    const isLt1M = file.size / 1024 / 1024 < 1;
+    if (!isLt1M) {
+      message.error('Image must smaller than 1MB!');
     }
-    return isJPG && isLt2M;
+    return isJPG && isLt1M;
   }
 
   render() {
@@ -49,7 +76,7 @@ class Avatar extends React.Component {
         className="avatar-uploader"
         name="avatar"
         showUploadList={false}
-        action="http://10.176.30.204:8002/db/files/h.jpg"
+        action="http://10.176.30.204:8002/db/files/pic.jpg"
         headers={{
           'X-Parse-Application-Id' : 'deeplink',
           'X-Parse-REST-API-Key' : 'f07u39HX6223UE0Pv3mYfsSFY5qNdEZ5',
@@ -260,6 +287,10 @@ const AndroidForm = Form.create()(React.createClass({
     const myappID = this.props.myappID;
     this.props.form.validateFields((err, values) => {
       if (!err) {
+        delete values.upload_apk;
+        if(__upload_resApk){
+          values.apkUrl = __upload_resApk;
+        }
         console.log('Received values of form: ', values);
         var myInit = {
           method: 'PUT',
@@ -279,6 +310,14 @@ const AndroidForm = Form.create()(React.createClass({
         
       }
     });
+  },
+  handleUpload(info){
+    if (info.file.status === 'done') {
+      //Only to show one recent uploaded files, and old ones will be replaced by the new
+      /*let fileList = info.fileList;
+      fileList = fileList.slice(-1);*/
+      __upload_resApk = info.file.response.url;
+    }
   },
   render() {
     const { getFieldDecorator,getFieldProps } = this.props.form;
@@ -310,9 +349,19 @@ const AndroidForm = Form.create()(React.createClass({
               }
               return e && e.fileList;
             },
-            /*rules: [{ required: true, message: 'Please input your note!' }],*/
+            rules: [{ required: true, message: 'Please input your note!' }],
           })(
-            <Upload name="logo" action="/upload.do" listType="picture" onChange={this.handleUpload}>
+            <Upload
+              name="upload_apk"
+              showUploadList={true}
+              action="http://10.176.30.204:8002/db/files/le.apk"
+              headers={{
+                'X-Parse-Application-Id' : 'deeplink',
+                'X-Parse-REST-API-Key' : 'f07u39HX6223UE0Pv3mYfsSFY5qNdEZ5',
+                'Content-Type' : 'image/jpeg',
+              }}
+              onChange={this.handleUpload.bind(this)}
+            >
               <Button type="ghost">
                 <Icon type="upload" /> Click to upload
               </Button>
@@ -408,6 +457,9 @@ class Appsetting extends React.Component {
       e.preventDefault();
       this.props.form.validateFields((err, values) => {
         if (!err) {
+          if(__upload_resUrl){
+            values.imageUrl = __upload_resUrl;
+          }
           console.log('Received values of form: ', values);
           var myInit = {
             method: 'PUT',
@@ -454,7 +506,7 @@ class Appsetting extends React.Component {
             </FormItem>
 
             <FormItem label="应用头像 " labelCol= {{ span: 3 }} wrapperCol= {{ span: 10, offset: 1 }} extra="点击图片可修改" >            
-              <Avatar/>
+              <Avatar myappID={myappID}/>
             </FormItem>
 
             <div className="Buttonbox">

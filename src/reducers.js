@@ -8,7 +8,7 @@ const userinfo = {
 const initState = {
 	userinfo: userinfo,
 	isShow: true,
-	myappID: 'klUpV8kVFu',
+	myappID: 'twc1NMzf5k',
 	myappName: '安安'
 };
 
