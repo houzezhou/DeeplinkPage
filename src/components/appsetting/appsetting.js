@@ -89,6 +89,7 @@ const IOSForm = Form.create()(React.createClass({
       mode: 'cors',
       cache: 'default',
     };
+    //进入页面，请求IOS数据，填充内容
     fetch('http://10.176.30.204:8002/db/classes/App/'+ myappID, myInit)
     .then(function(response) {
       return response.json();
@@ -96,20 +97,21 @@ const IOSForm = Form.create()(React.createClass({
     .then(function(json) {
       console.log(json)
       _this.props.form.setFieldsValue({
-        'have_universal' : json.IOS.have_universal,
-        'Apple_App_Prefix': json.IOS.Apple_App_Prefix, 
-        'Bundle_ID': json.IOS.Bundle_ID,
-        'Universal_links': json.IOS.Universal_links,
-        'URI_Scheme' : json.IOS.URI_Scheme,
-        'brow_down_url' : json.IOS.brow_down_url,
-        'yyb_down_url' : json.IOS.yyb_down_url,
+        'have_universal' : json.IOS.have_universal ? json.IOS.have_universal : '',
+        'Apple_App_Prefix': json.IOS.Apple_App_Prefix ? json.IOS.Apple_App_Prefix : '',
+        'Bundle_ID': json.IOS.Bundle_ID ? json.IOS.Bundle_ID : '',
+        'Universal_links': json.IOS.Universal_links ? json.IOS.Universal_links : '',
+        'URI_Scheme' : json.IOS.URI_Scheme ? json.IOS.URI_Scheme : '',
+        'brow_down_url' : json.IOS.brow_down_url ? json.IOS.brow_down_url : '',
+        'yyb_down_url' : json.IOS.yyb_down_url ? json.IOS.yyb_down_url : '',
       });
       _this.setState({
         switchshow: json.IOS.have_universal
       });
     });
   },
-  handleSubmit(e) {
+  //提交IOS表单数据
+  handleSubmit_IOS(e) {
     e.preventDefault();
     const myappID = this.props.myappID;
     const setFieldsValue = this.props.form.setFieldsValue;
@@ -142,7 +144,7 @@ const IOSForm = Form.create()(React.createClass({
   render() {
     const { getFieldDecorator,getFieldProps } = this.props.form;
     return (
-      <Form onSubmit={this.handleSubmit}>
+      <Form onSubmit={this.handleSubmit_IOS}>
         
         <FormItem label="URI Scheme" labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
           {getFieldDecorator('URI_Scheme', {
@@ -220,31 +222,68 @@ const IOSForm = Form.create()(React.createClass({
 
 //AndroidForm组件
 const AndroidForm = Form.create()(React.createClass({
-  /*getInitialState() {
-    return {
-      switchshow: false,
+  componentDidMount(){
+    const myappID = this.props.myappID;
+    const _this = this;
+
+    var myInit = {
+      method: 'GET',
+      headers: myHeaders,
+      mode: 'cors',
+      cache: 'default',
     };
-  },*/
-  handleSubmit(e) {
+    //进入页面，请求安卓数据，填充内容
+    fetch('http://10.176.30.204:8002/db/classes/App/'+ myappID, myInit)
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(json) {
+      console.log(json)
+
+      var URI_Scheme = json.Android.URI_Scheme,
+          upload_apk = json.Android.upload_apk,
+          Bundle_ID = json.Android.Bundle_ID,
+          brow_down_url = json.Android.brow_down_url,
+          yyb_down_url = json.Android.yyb_down_url;
+
+      _this.props.form.setFieldsValue({
+        'URI_Scheme' : URI_Scheme ? URI_Scheme : '',
+        'upload_apk': upload_apk ? upload_apk : '',
+        'Bundle_ID': Bundle_ID ? Bundle_ID : '',
+        'brow_down_url' : brow_down_url ? brow_down_url : '',
+        'yyb_down_url' : yyb_down_url ? yyb_down_url : '',
+      });
+    });
+  },
+  handleSubmit_Android(e) {
     e.preventDefault();
+    const myappID = this.props.myappID;
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
+        var myInit = {
+          method: 'PUT',
+          headers: myHeaders,
+          mode: 'cors',
+          cache: 'default',
+          body: JSON.stringify({ 'Android' : values })
+        }
+        //提交安卓表单
+        fetch('http://10.176.30.204:8002/db/classes/App/'+ myappID, myInit)
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(json) {
+          console.log(json)
+        });
+        
       }
     });
-    var obj = this.props.form.getFieldsValue([
-      'URI_Scheme', 
-      '别名', 
-      '地址',
-      'brow_down_url', 
-      'yyb_down_url'
-    ]);
-    alert(JSON.stringify(obj))
   },
   render() {
     const { getFieldDecorator,getFieldProps } = this.props.form;
     return (
-      <Form onSubmit={this.handleSubmit}>
+      <Form onSubmit={this.handleSubmit_Android}>
         
         <FormItem label="URI Scheme" labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
           {getFieldDecorator('URI_Scheme', {
@@ -263,7 +302,7 @@ const AndroidForm = Form.create()(React.createClass({
         </FormItem>
 
         <FormItem label="Upload" labelCol= {{ span: 5 }} wrapperCol= {{ span: 12 }} extra="请传XXXXX." >
-          {getFieldDecorator('upload', {
+          {getFieldDecorator('upload_apk', {
             valuePropName: 'fileList',
             normalize: function normFile(e) {
               if (Array.isArray(e)) {
@@ -271,7 +310,7 @@ const AndroidForm = Form.create()(React.createClass({
               }
               return e && e.fileList;
             },
-            rules: [{ required: true, message: 'Please input your note!' }],
+            /*rules: [{ required: true, message: 'Please input your note!' }],*/
           })(
             <Upload name="logo" action="/upload.do" listType="picture" onChange={this.handleUpload}>
               <Button type="ghost">
@@ -294,17 +333,13 @@ const AndroidForm = Form.create()(React.createClass({
         </FormItem>
 
         <FormItem label="别名" labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
-          {getFieldDecorator('别名', {
-            rules: [{ required: true, message: 'Please input your note!' }],
-          })(
+          {getFieldDecorator('别名')(
             <Input placeholder="示例 ：aaa.bbb.ccc"/>
           )}
         </FormItem>
 
         <FormItem label="地址" labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
-          {getFieldDecorator('地址', {
-            rules: [{ required: true, message: 'Please input your note!' }],
-          })(
+          {getFieldDecorator('地址')(
             <Input placeholder="示例 ：aaa.bbb.ccc"/>
           )}
         </FormItem>
@@ -443,7 +478,7 @@ class Appsetting extends React.Component {
           
           <Panel header="是否有Android应用？（点击展开）" key="2" style={{marginTop:'20px'}}>
             <div className="AndroidApp">
-              <AndroidForm/>
+              <AndroidForm myappID={ myappID }/>
             </div>
           </Panel>
         </Collapse>
