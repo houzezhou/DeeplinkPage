@@ -2,6 +2,7 @@ import React from 'react'
 import { Input,Button,Upload,Icon,Modal,Popconfirm, message,Collapse,Form,Switch,Tooltip } from 'antd';
 import './appsetting.css';
 import RegistrationForm from './form.js';
+import customRequest from './customRequest.js';
 
 const FormItem = Form.Item;
 
@@ -84,6 +85,7 @@ class Avatar extends React.Component {
         }}
         beforeUpload={this.beforeUpload}
         onChange={this.handleChange}
+        customRequest={customRequest}
       >
         {
           imageUrl ?
@@ -247,8 +249,48 @@ const IOSForm = Form.create()(React.createClass({
   },
 }));
 
+
+let uuid = 0;
 //AndroidForm组件
 const AndroidForm = Form.create()(React.createClass({
+
+  /******点击添加自定义 input******/
+  componentWillMount() {
+    this.props.form.setFieldsValue({
+      keys: [0],
+    });
+  },
+
+  remove(k) {
+    const { form } = this.props;
+    // can use data-binding to get
+    const keys = form.getFieldValue('keys');
+    // We need at least one passenger
+    if (keys.length === 0) {
+      return;
+    }
+
+    // can use data-binding to set
+    form.setFieldsValue({
+      keys: keys.filter(key => key !== k),
+    });
+  },
+
+  add() {
+    uuid++;
+    const { form } = this.props;
+    // can use data-binding to get
+    const keys = form.getFieldValue('keys');
+    const nextKeys = keys.concat(uuid);
+    // can use data-binding to set
+    // important! notify form to detect changes
+    form.setFieldsValue({
+      keys: nextKeys,
+    });
+  },
+  /******点击添加自定义 input******/
+
+
   componentDidMount(){
     const myappID = this.props.myappID;
     const _this = this;
@@ -320,7 +362,56 @@ const AndroidForm = Form.create()(React.createClass({
     }
   },
   render() {
-    const { getFieldDecorator,getFieldProps } = this.props.form;
+    const { getFieldDecorator,getFieldProps,getFieldValue } = this.props.form;
+
+    /******点击添加自定义 input render里 定义变量******/
+    //getFieldDecorator('keys', { initialValue: [] });
+    const keys = getFieldValue('keys');
+    debugger
+    const formItems = keys.map((k, index) => {
+      if(index>0){
+        return (
+          <div key={k}>
+          <FormItem
+            label="别名" labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}
+            required={false}
+          >
+            {getFieldDecorator(`names-${k}`, {
+              validateTrigger: ['onChange', 'onBlur']
+            })(
+              <Input placeholder="passenger name"/>
+            )}
+            <Icon
+              className="dynamic-delete-button"
+              type="minus-circle-o"
+              disabled={keys.length === 1}
+              onClick={() => this.remove(k)}
+            />
+          </FormItem>
+          
+          <FormItem
+            label="地址" labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}
+            required={false}
+          >
+            {getFieldDecorator(`names-${k}`, {
+              validateTrigger: ['onChange', 'onBlur']
+            })(
+              <Input placeholder="passenger name"/>
+            )}
+            <Icon
+              className="dynamic-delete-button"
+              type="minus-circle-o"
+              disabled={keys.length === 1}
+              onClick={() => this.remove(k)}
+            />
+          </FormItem>
+          </div>
+        );      
+      }
+
+    });
+    /******点击添加自定义 input render里 定义变量******/
+
     return (
       <Form onSubmit={this.handleSubmit_Android}>
         
@@ -361,6 +452,7 @@ const AndroidForm = Form.create()(React.createClass({
                 'Content-Type' : 'image/jpeg',
               }}
               onChange={this.handleUpload.bind(this)}
+              customRequest={customRequest}
             >
               <Button type="ghost">
                 <Icon type="upload" /> Click to upload
@@ -381,7 +473,7 @@ const AndroidForm = Form.create()(React.createClass({
           <Input {...getFieldProps('yyb_down_url')} placeholder="示例 ：aaa.bbb.ccc" />
         </FormItem>
 
-        <FormItem label="别名" labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
+        {/*<FormItem label="别名" labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
           {getFieldDecorator('别名')(
             <Input placeholder="示例 ：aaa.bbb.ccc"/>
           )}
@@ -391,7 +483,16 @@ const AndroidForm = Form.create()(React.createClass({
           {getFieldDecorator('地址')(
             <Input placeholder="示例 ：aaa.bbb.ccc"/>
           )}
+        </FormItem>*/}
+
+        {/***************点击添加自定义input****************/}
+        {formItems}
+        <FormItem label="添加自定义下载" labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
+          <Button type="dashed" onClick={this.add} style={{ width: '60%' }}>
+            <Icon type="plus" /> Add field
+          </Button>
         </FormItem>
+        {/***************点击添加自定义input****************/}
 
         <FormItem wrapperCol={{ span: 2, offset: 9 }}>
           <Button type="primary" htmlType="submit">
